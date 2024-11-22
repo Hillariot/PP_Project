@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <string>
 
-// Функция для вывода текста по центру консоли
+// Function for displaying text in the center of the console
 void center_text(const std::string& str)
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
