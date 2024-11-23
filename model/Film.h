@@ -1,7 +1,9 @@
+#pragma once
 #include <string>
 #include <vector>
 
-struct Film {		//Структура
+struct Film 
+{		
 	std::string name;
 	std::vector<std::string> times;
 };
