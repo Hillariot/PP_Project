@@ -6,7 +6,7 @@
 
 
 bool validateName(const std::string& name) {
-    std::regex pattern(R"([A-Za-zÀ-ßà-ÿ¨¸]{2,50})");
+    std::regex pattern(R"([A-Za-zĞ-Ğ¯Ğ°-ÑĞÑ‘]{2,50})");
     return std::regex_match(name, pattern);
 }
 bool validatePhone(const std::string& phone) {
