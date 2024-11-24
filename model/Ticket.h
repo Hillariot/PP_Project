@@ -13,9 +13,3 @@ struct Ticket {
 	std::vector<int> raws;
 	std::vector<int> seats;
 };
-
-struct Film
-{
-	std::string name;
-	std::vector<std::string> times;
-};
