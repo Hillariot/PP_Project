@@ -79,6 +79,3 @@ std::map<std::string, Film> Open_and_Read_file(std::string path)		//Открыт
 	}
 	
 }
-
-int main() {
-}
