@@ -8,7 +8,6 @@
 #include <fstream>
 #include <map>
 #include <vector>
-#include <sstream>
 
 
 bool validateName(const std::string& name) {
@@ -46,7 +45,23 @@ bool validateTicketCount(const std::string& count) {
     return std::regex_match(count, std::regex(R"(\d+)"));
 }
 
-std::map<std::string, Film> split(std::vector<std::string> lines) {		//Разделить и закинуть название и времена сеансов в структуру и сформировать словарь
+std::vector<std::string> split(std::string s, const std::string& delimiter) {
+	std::vector<std::string> tokens;
+	std::size_t pos = 0;
+	std::string token;
+	while ((pos = s.find(delimiter)) != std::string::npos)
+	{
+		token = s.substr(0, pos);
+		tokens.push_back(token);
+		s.erase(0, pos + delimiter.length());
+	}
+	tokens.push_back(s);
+
+	return tokens;
+}
+
+
+std::map<std::string, Film> parse(std::vector<std::string> lines) {		//Разделить и закинуть название и времена сеансов в структуру и сформировать словарь
 	std::map<std::string, Film> Film_dates;
 	for (std::string separate_str : lines) {
 
@@ -77,18 +92,15 @@ std::map<std::string, Film> split(std::vector<std::string> lines) {		//Разд�
 			}
 			i++;
 		}
-		separate_str.erase(0, i);		//Оставляем только даты
-		std::istringstream times_data(separate_str);
+		separate_str.erase(0, i);		//Оставляем только время
 		std::string time;
 		std::vector<std::string> times;
-		while (times_data >> time) {		//Поделить времена потоком
-			times.push_back(time);
-		}
-		data_Film.times = times;		//Поместить времена на место в структуре
+
+		for (auto time : split(separate_str, ","))		
+			data_Film.times.push_back(time);
+		
 		Film_dates[date] = data_Film;
 	}
-
-
 
 	return Film_dates;
 }
@@ -114,7 +126,7 @@ std::map<std::string, Film> Open_and_Read_file(std::string path)		//Открыт
 
 		}
 		input_file.close();
-		return split(lines);	//Составить словарь на основе множества фильмов
+		return parse(lines);	//Составить словарь на основе множества фильмов
 	}
 
 }
