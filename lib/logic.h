@@ -61,7 +61,7 @@ std::vector<std::string> split(std::string s, const std::string& delimiter) {
 }
 
 
-std::map<std::string, Film> parse(std::vector<std::string> lines) {		//Разделить и закинуть название и времена сеансов в структуру и сформировать словарь
+std::map<std::string, Film> parser(std::vector<std::string> lines) {		//Разделить и закинуть название и времена сеансов в структуру и сформировать словарь
 	std::map<std::string, Film> Film_dates;
 	for (std::string separate_str : lines) {
 
@@ -106,7 +106,7 @@ std::map<std::string, Film> parse(std::vector<std::string> lines) {		//Разд�
 }
 
 
-std::map<std::string, Film> Open_and_Read_file(std::string path)		//Открытие файла и запись в словарь
+std::map<std::string, Film> get_file_info(std::string path)		//Открытие файла и запись в словарь
 {
 	std::ifstream input_file;
 	input_file.open(path);
@@ -114,7 +114,7 @@ std::map<std::string, Film> Open_and_Read_file(std::string path)		//Открыт
 	if (!(input_file.is_open()))		//Файл не открылся
 	{
 		std::cout << "Error file open";
-
+		exit(1);
 	}
 	else {
 		std::vector<std::string> lines;
@@ -126,7 +126,13 @@ std::map<std::string, Film> Open_and_Read_file(std::string path)		//Открыт
 
 		}
 		input_file.close();
-		return parse(lines);	//Составить словарь на основе множества фильмов
+		return parser(lines);	//Составить словарь на основе множества фильмов
 	}
 
+}
+
+int fulltime(std::string time)
+{
+	std::vector<std::string> hh_mm = split(time, ":");
+	return stoi(hh_mm[0]) * 60 + stoi(hh_mm[1]);
 }

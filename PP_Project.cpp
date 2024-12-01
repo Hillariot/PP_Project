@@ -2,58 +2,54 @@
 #include "lib/logic.h"
 
 #include <iostream>
-#include <regex>
-#include <string>
-const int MAX_ROW = 20;
-const int MAX_COLUMN = 20;
+
 using namespace std;
 
-
-
-bool validateName(const std::string& name) {
-    std::regex pattern(R"([A-Za-zА-Яа-яЁё]{2,50})");
-    return std::regex_match(name, pattern);
-}
-bool validatePhone(const std::string& phone) {
-    std::regex pattern(R"((\+7|8)\d{10})");
-    return std::regex_match(phone, pattern);
-}
-bool validateEmail(const std::string& email) {
-    std::regex pattern(R"([^@\s]+@[^@\s]+\.[A-Za-z]{2,})");
-    return std::regex_match(email, pattern);
-}
-bool validateAge(const std::string& age) {
-    if (!std::regex_match(age, std::regex(R"(\d+)"))) return false;
-    int ageInt = std::stoi(age);
-    return ageInt >= 1 && ageInt <= 120;
-}
-bool validateDate(const std::string& date) {
-    std::regex pattern(R"(\d{2}\.\d{2}\.\d{4})");
-    return std::regex_match(date, pattern);
-}
-bool validateTime(const std::string& time) {
-    std::regex pattern(R"((0\d|1\d|2[0-3]):[0-5]\d)");
-    return std::regex_match(time, pattern);
-}
-bool validateSeat(const std::string& row, const std::string& seat) {
-    if (!std::regex_match(row, std::regex(R"(\d+)")) || !std::regex_match(seat, std::regex(R"(\d+)"))) return false;
-    int rowNum = std::stoi(row);
-    int seatNum = std::stoi(seat);
-    return rowNum >= 1 && rowNum <= MAX_ROW && seatNum >= 1 && seatNum <= MAX_COLUMN;
-}
-bool validateTicketCount(const std::string& count) {
-    return std::regex_match(count, std::regex(R"(\d+)"));
-}
 int main()
 {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-    string str;
-    getline(cin, str);
-    if (validateTime(str))
-        cout << "True\n";
-    else
-        cout << "False\n";
+    
+	auto seanses = get_file_info("путь до файла с сеансами"); 	// пример строки в файле 01.12.2024;Doctor Who;11:00,12:00,16:00
+	auto coasts = get_file_info("путь до файла с ценами");		// пример строки в файле 01.12.2024;Doctor Who;00:00-390rub,15:15-450rub,20:20-500rub
+
+	for (auto i : seanses)
+	{
+		cout << i.first << '\n';
+		cout << i.second.name << ": ";
+
+		vector<pair<string, string>> coasts_film;
+
+		for (auto j : coasts)
+		{
+			if (i.second.name == j.second.name)
+			{
+				for (int h = 0; h < j.second.times.size(); h++)
+				{
+					vector<string>time_coast = split(j.second.times[h], "-");
+					coasts_film.push_back(make_pair(time_coast[0], time_coast[1]));
+				}
+				break;
+			}
+		}
+
+		for (int j = 0; j < i.second.times.size(); j++)
+		{
+			string coast;
+			for (int h = 0; h < coasts_film.size(); h++)
+			{
+				if (fulltime(i.second.times[j]) > fulltime(coasts_film[h].first))
+				{
+					coast = coasts_film[h].second;
+				}
+			}
+			cout << i.second.times[j] << " - " << coast << '\n';
+		}
+		cout << "\n\n";
+	}
+
+	
+
 	system("pause");
 	return 0;
 }
