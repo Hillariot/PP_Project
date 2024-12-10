@@ -1,14 +1,27 @@
 ﻿#include "lib/interface_design.h"
 #include "lib/logic.h"
-
+#include "lib/registration.h"
 #include <iostream>
+<<<<<<< HEAD
+#include <string>
 
 using namespace std;
 
+
+
+=======
+
+using namespace std;
+
+>>>>>>> f3b90d061529a7abfaa6a64184d4eeb259d54055
 int main()
 {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
+<<<<<<< HEAD
+	registrate("loginsdada ", "passwordsdadas", "base.txt");
+	
+=======
 
 	auto seanses = get_file_info("путь до файла с сеансами"); 	// пример строки в файле 01.12.2024;Doctor Who;11:00,12:00,16:00
 	auto coasts = get_file_info("путь до файла с ценами");		// пример строки в файле 01.12.2024;Doctor Who;00:00-390rub,15:15-450rub,20:20-500rub
@@ -50,6 +63,7 @@ int main()
 
 	
 
+>>>>>>> f3b90d061529a7abfaa6a64184d4eeb259d54055
 	system("pause");
 	return 0;
 }
