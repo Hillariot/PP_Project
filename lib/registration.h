@@ -67,7 +67,7 @@ std::string decode(std::string text) {
 }
 
 void registrate(std::string login, std::string pass, std::string registrationFile) {
-    std::ofstream fout(registrationFile, std::ios_base::app);
+    std::ofstream fout(registrationFile);
     if (!fout.is_open()) {
         std::cerr << "Error opening file: " << registrationFile << std::endl;
         return;
