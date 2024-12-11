@@ -111,7 +111,7 @@ int login_account(std::string login, std::string pass, std::string fileName) {
     std::string currentLogin, currentPassword;
     std::string line;
     while (std::getline(fin, line)) {
-        istringstream iss(line);
+        std::istringstream iss(line);
         iss >> currentLogin >> currentPassword;
         if (currentLogin == decode(login) && currentPassword == decode(pass)) {
             fin.close();

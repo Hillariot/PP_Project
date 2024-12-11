@@ -13,21 +13,21 @@ using namespace std;
 
 int main()
 {
-#ifdef WIN32
+#ifdef _WIN32
 #include <Windows.h>
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 #endif // WIN32
 
 	//registrate("loginsdada ", "passwordsdadas", "base.txt");
-
+center_print("1. Вход");
+	center_print("2. Регистрация");
 	map<string, Film> seanses = get_file_info("/home/shadow_usr/C++/PP_Project/Data/Seanses.txt"); 	// пример строки в файле 01.12.2024;Doctor Who;11:00,12:00,16:00
 	map<string, Film> coasts = get_file_info("/home/shadow_usr/C++/PP_Project/Data/Coasts.txt");		// пример строки в файле 01.12.2024;Doctor Who;00:00-390rub,15:15-450rub,20:20-500rub
 
 	int choice = 1;
 
-	center_print("1. Вход");
-	center_print("2. Регистрация");
+	
 
 	cin >> choice;
 

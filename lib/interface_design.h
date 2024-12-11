@@ -8,7 +8,7 @@
 #include <string>
 
 #ifdef _WIN32
-	#include <windows.h>
+	#include <Windows.h>
 
 	// Function for setting padding for centering
 	void set_padding(const int& size_text)
