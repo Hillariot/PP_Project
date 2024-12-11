@@ -1,9 +1,7 @@
-#pragma once 
-
-#include <fstream>
-#include <string>
+ï»¿#include <string>
 #include "../model/constants.h"
 #include <iostream>
+#include <sstream>
 std::string encode(std::string text) {
     std::string result;
     for (char c : text) {
@@ -15,12 +13,12 @@ std::string encode(std::string text) {
             char encodedChar = (c - 'a' + KEY) % 26 + 'a';
             result += encodedChar;
         }
-        else if (c >= 'À' && c <= 'ß') {
-            char encodedChar = (c - 'À' + KEY) % 32 + 'À';
+        else if (c >= 'Ğ' && c <= 'Ğ¯') {
+            char encodedChar = (c - 'Ğ' + KEY) % 32 + 'Ğ';
             result += encodedChar;
         }
-        else if (c >= 'à' && c <= 'ÿ') {
-            char encodedChar = (c - 'à' + KEY) % 32 + 'à';
+        else if (c >= 'Ğ°' && c <= 'Ñ') {
+            char encodedChar = (c - 'Ğ°' + KEY) % 32 + 'Ğ°';
             result += encodedChar;
         }
         else if (isdigit(c)) {
@@ -34,7 +32,6 @@ std::string encode(std::string text) {
     }
     return result;
 }
-
 std::string decode(std::string text) {
     std::string result;
     for (char c : text) {
@@ -46,12 +43,12 @@ std::string decode(std::string text) {
             char decodedChar = (c - 'a' - KEY + 26) % 26 + 'a';
             result += decodedChar;
         }
-        else if (c >= 'À' && c <= 'ß') {
-            char decodedChar = (c - 'À' - KEY + 32) % 32 + 'À';
+        else if (c >= 'Ğ' && c <= 'Ğ¯') {
+            char decodedChar = (c - 'Ğ' - KEY + 32) % 32 + 'Ğ';
             result += decodedChar;
         }
-        else if (c >= 'à' && c <= 'ÿ') {
-            char decodedChar = (c - 'à' - KEY + 32) % 32 + 'à';
+        else if (c >= 'Ğ' && c <= 'Ğ') {
+            char decodedChar = (c - 'Ğ°' - KEY + 32) % 32 + 'Ğ°';
             result += decodedChar;
         }
         else if (isdigit(c)) {
@@ -65,11 +62,31 @@ std::string decode(std::string text) {
     }
     return result;
 }
+bool isLoginInBase(const std::string& login, std::ifstream& fout) {
+    std::string line;
+    std::string currentLogin, password;
 
+    while (std::getline(fout, line)) {  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        std::istringstream iss(line);
+        iss >> currentLogin >> password;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (currentLogin == login) {
+            return true; 
+        }
+    }
+    return false;  // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+}
 void registrate(std::string login, std::string pass, std::string registrationFile) {
-    std::ofstream fout(registrationFile);
+    std::ifstream fin(registrationFile);
+    if (isLoginInBase(encode(login), fin)) {
+        std::cerr << "Login is already exist";
+        fin.close();
+        return;
+    }
+    fin.close();
+    std::ofstream fout(registrationFile, std::ios_base::app);
     if (!fout.is_open()) {
         std::cerr << "Error opening file: " << registrationFile << std::endl;
+        fout.close();
         return;
     }
 
@@ -78,6 +95,7 @@ void registrate(std::string login, std::string pass, std::string registrationFil
 
     if (first.empty() || second.empty()) {
         std::cerr << "Error: encoded login or password is empty." << std::endl;
+        fout.close();
         return;
     }
 
@@ -85,8 +103,21 @@ void registrate(std::string login, std::string pass, std::string registrationFil
     if (!fout) {
         std::cerr << "Error writing to file." << std::endl;
     }
+    fout.close();
 }
 
-
-
-
+int login_account(std::string login, std::string pass, std::string fileName) {
+    std::ifstream fin(fileName);
+    std::string currentLogin, currentPassword;
+    std::string line;
+    while (std::getline(fin, line)) {
+        istringstream iss(line);
+        iss >> currentLogin >> currentPassword;
+        if (currentLogin == decode(login) && currentPassword == decode(pass)) {
+            fin.close();
+            return 1;
+        }
+    }
+    fin.close();
+    return 0;
+}

@@ -13,11 +13,12 @@ using namespace std;
 
 int main()
 {
-﻿#ifdef _WIN32
+#ifdef WIN32
 #include <Windows.h>
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-#endif
+#endif // WIN32
+
 	//registrate("loginsdada ", "passwordsdadas", "base.txt");
 
 	map<string, Film> seanses = get_file_info("/home/shadow_usr/C++/PP_Project/Data/Seanses.txt"); 	// пример строки в файле 01.12.2024;Doctor Who;11:00,12:00,16:00
