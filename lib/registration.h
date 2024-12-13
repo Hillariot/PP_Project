@@ -1,7 +1,10 @@
-﻿#include <string>
+﻿#pragma once
+#include <string>
 #include "../model/constants.h"
 #include <iostream>
+#include <string.h>
 #include <sstream>
+
 std::string encode(std::string text) {
     std::string result;
     for (char c : text) {
@@ -22,16 +25,17 @@ std::string encode(std::string text) {
             result += encodedChar;
         }
         else if (isdigit(c)) {
-            char encodedChar = (c - '0' + KEY) % 10 + '0'; 
+            char encodedChar = (c - '0' + KEY) % 10 + '0';
             result += encodedChar;
         }
         else {
-            char encodedChar = c; 
+            char encodedChar = c;
             result += encodedChar;
         }
     }
     return result;
 }
+
 std::string decode(std::string text) {
     std::string result;
     for (char c : text) {
@@ -52,7 +56,7 @@ std::string decode(std::string text) {
             result += decodedChar;
         }
         else if (isdigit(c)) {
-            char decodedChar = (c - '0' - KEY + 10) % 10 + '0'; 
+            char decodedChar = (c - '0' - KEY + 10) % 10 + '0';
             result += decodedChar;
         }
         else {
@@ -62,6 +66,7 @@ std::string decode(std::string text) {
     }
     return result;
 }
+
 bool isLoginInBase(const std::string& login, std::ifstream& fout) {
     std::string line;
     std::string currentLogin, password;
@@ -70,11 +75,12 @@ bool isLoginInBase(const std::string& login, std::ifstream& fout) {
         std::istringstream iss(line);
         iss >> currentLogin >> password;  // ��������� ����� � ������ �� ������
         if (currentLogin == login) {
-            return true; 
+            return true;
         }
     }
     return false;  // ����� �� ������
 }
+
 void registrate(std::string login, std::string pass, std::string registrationFile) {
     std::ifstream fin(registrationFile);
     if (isLoginInBase(encode(login), fin)) {
