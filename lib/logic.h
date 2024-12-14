@@ -2,6 +2,7 @@
 #include "../model/constants.h"
 #include "../model/Film.h"
 #include "../model/Date.h"
+#include "../model/Ticket.h"
 #include "Converter.h"
 
 #include <regex>
@@ -222,8 +223,44 @@ bool film_exist(const std::vector<Film>& seanses, const std::string& film_search
 		{
 			info.second.name = seanses[i].name;
 			info.second.data = seanses[i].data;
+			info.second.subdata = seanses[i].subdata;
 			return true;
 		}
 	}
 	return false;
+}
+
+int get_filmIndex_time(const Film& film, const std::string& time)
+{
+	for (int i = 0; i < film.data.size(); i++)
+	{
+		if (film.data[i] == time)
+			return i;
+	}
+	return -1;
+}
+
+void save_ticket(const Ticket& ticket, const std::string& path)
+{
+	std::ofstream fout(path, std::ios::app);
+	if (!fout.is_open())
+		return;
+
+	fout << ticket.date << ';' << ticket.filmName << ';' << ticket.startTime << ';' << ticket.hallNumber << ';';
+	for (int i = 0; i < ticket.raws.size(); i++)
+	{
+		fout << ticket.raws[i];
+		if (i + 1 != ticket.raws.size())
+			fout << ',';
+		else
+			fout << ';';
+	}
+	for (int i = 0; i < ticket.seats.size(); i++)
+	{
+		fout << ticket.seats[i];
+		if (i + 1 != ticket.seats.size())
+			fout << ',';
+	}
+	fout << '\n';
+	fout.close();
 }

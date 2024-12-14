@@ -58,6 +58,9 @@ void print_cinemahall(const std::vector<std::vector<int>>& hall)
 			case static_cast<int>(condition_place::seat):
 				std::cout << "\033[91m" << static_cast<char>(texture_for_seats::seat) << "\033[39m" << ' ';
 				break;
+			case static_cast<int>(condition_place::your):
+				std::cout << "\033[32m" << static_cast<char>(texture_for_seats::your) << "\033[32m" << ' ';
+				break;
 			}
 		}
 		std::cout << '\n';
@@ -141,7 +144,6 @@ void print_coasts(const std::pair<std::string, Film>& filmInfo, const std::map<s
 	{
 		if (filmInfo.first != i.first)
 			continue;
-
 		for (auto j : i.second)
 		{
 			if (filmInfo.second.name == j.name)
